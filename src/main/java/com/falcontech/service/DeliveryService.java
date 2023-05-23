@@ -1,5 +1,7 @@
 package com.falcontech.service;
 
+import com.falcontech.model.Address;
+import com.falcontech.model.Order;
 import com.falcontech.model.Summary;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -13,7 +15,8 @@ public class DeliveryService {
   @Inject @RestClient AddressService addressService;
 
   public CompletionStage<Summary> getDeliverySummary(String id) {
-    return orderService.getOrderInfo(id).handleAsync((order,throwable) -> {
+    CompletionStage<Order> orderCS = orderService.getOrderInfo(id);
+    return orderCS.handleAsync((order,throwable) -> {
       Summary summary = new Summary();
       summary.setOrder(order);
       return summary;
